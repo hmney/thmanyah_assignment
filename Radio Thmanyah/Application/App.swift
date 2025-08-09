@@ -14,7 +14,8 @@ struct ThmanyahCloneApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-                HomeScreen()
+                AppTabBar()
+                    .environment(\.colorScheme, .dark)
                     .environmentObject(homeViewModel)
             }
         }

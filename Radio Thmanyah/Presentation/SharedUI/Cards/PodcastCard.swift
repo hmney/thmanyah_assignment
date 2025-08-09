@@ -14,31 +14,23 @@ struct PodcastCard: View {
     let episodeCount: Int
     
     var body: some View {
-        VStack(alignment: .trailing, spacing: 8) {
-            AsyncImage(url: imageURL) { phase in
-                switch phase {
-                case .empty:
-                    Rectangle().fill(AppColors.cardBackground).overlay(ProgressView()).frame(width: 140, height: 140)
-                case .success(let image):
-                    image.resizable().scaledToFill().frame(width: 140, height: 140).clipped()
-                case .failure:
-                    Rectangle().fill(.gray.opacity(0.3)).frame(width: 140, height: 140)
-                @unknown default:
-                    Rectangle().fill(.gray.opacity(0.3)).frame(width: 140, height: 140)
-                }
-            }
-            .cornerRadius(10)
-            
+        VStack(alignment: .leading, spacing: 8) {
+            RemoteImage(
+                url: imageURL,
+                size: .init(width: 140, height: 140),
+                cornerRadius: 10
+            )
+
             Text(title)
                 .ibmFont(.medium, size: 16)
                 .foregroundColor(AppColors.primaryText)
                 .lineLimit(1)
-                .frame(maxWidth: 140, alignment: .trailing)
-            
-            Text("\(ArabicFormatters.arabicIndicNumber(episodeCount)) حلقة")
+                .frame(maxWidth: 140, alignment: .leading)
+
+            Text("\(episodeCount) episodes")
                 .ibmFont(.regular, size: 14)
                 .foregroundColor(AppColors.secondaryText)
-                .frame(maxWidth: 140, alignment: .trailing)
+                .frame(maxWidth: 140, alignment: .leading)
         }
     }
 }

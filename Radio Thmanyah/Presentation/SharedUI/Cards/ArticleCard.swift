@@ -15,30 +15,25 @@ struct ArticleCard: View {
     let duration: Int
     
     var body: some View {
-        VStack(alignment: .trailing, spacing: 8) {
-            AsyncImage(url: imageURL) { phase in
-                switch phase {
-                case .empty: Rectangle().fill(AppColors.cardBackground).overlay(ProgressView())
-                case .success(let image): image.resizable().scaledToFill()
-                case .failure: Rectangle().fill(.gray.opacity(0.3))
-                @unknown default: Rectangle().fill(.gray.opacity(0.3))
-                }
-            }
-            .frame(height: 160)
-            .cornerRadius(10)
-            .clipped()
-            
+        VStack(alignment: .leading, spacing: 8) {
+            RemoteImage(
+                url: imageURL,
+                size: .init(width: 160, height: 160),
+                cornerRadius: 10
+            )
+
+
             Text(title)
                 .ibmFont(.medium, size: 16)
                 .foregroundColor(AppColors.primaryText)
                 .lineLimit(2)
-                .multilineTextAlignment(.trailing)
-            
-            Text("\(author) • \(ArabicFormatters.duration(minutes: duration))")
+                .multilineTextAlignment(.leading)
+
+            Text("\(author) • \(Formatters.duration(seconds: duration))")
                 .ibmFont(.regular, size: 14)
                 .foregroundColor(AppColors.secondaryText)
                 .lineLimit(1)
-                .multilineTextAlignment(.trailing)
+                .multilineTextAlignment(.leading)
         }
     }
 }

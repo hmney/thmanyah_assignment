@@ -8,23 +8,18 @@
 
 import Foundation
 
-enum ArabicFormatters {
-    static let arabicLocale = Locale(identifier: "ar")
-    
-    static func arabicIndicNumber(_ number: Int) -> String {
-        let formatter = NumberFormatter()
-        formatter.locale = arabicLocale
-        return formatter.string(from: NSNumber(value: number)) ?? "\(number)"
-    }
-    
-    static func duration(minutes: Int) -> String {
-        let hours = minutes / 60
-        let mins = minutes % 60
-        
-        if hours > 0 {
-            return "\(arabicIndicNumber(hours)) ساعة و\(arabicIndicNumber(mins)) دقيقة"
+enum Formatters {
+    static func duration(seconds: Int) -> String {
+        let hours = seconds / 3600
+        let mins = (seconds % 3600) / 60
+
+        if hours > 0 && mins > 0 {
+            return "\(hours)h \(mins)m"
+        } else if hours > 0 {
+            return "\(hours)h"
         } else {
-            return "\(arabicIndicNumber(mins)) دقيقة"
+            return "\(mins)m"
         }
     }
 }
+

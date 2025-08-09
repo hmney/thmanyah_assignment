@@ -19,28 +19,36 @@ struct SectionRenderer: View {
             case .queue:
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 12) {
-                        ForEach(Array(section.items.enumerated()), id: \.offset) { _, item in
+                        ForEach(section.items) { item in
                             card(for: item)
                         }
                     }
                     .padding(.horizontal, 16)
                 }
             case .square, .bigSquare:
-                let min: CGFloat = section.displayStyle == .bigSquare ? 160 : 130
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: min), spacing: 12)], spacing: 12) {
-                    ForEach(Array(section.items.enumerated()), id: \.offset) { _, item in
-                        card(for: item)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 12) {
+                        ForEach(section.items) { item in
+                            card(for: item)
+                        }
                     }
+                    .padding(.horizontal, 16)
                 }
-                .padding(.horizontal, 16)
             case .twoLinesGrid:
-                VStack(spacing: 12) {
-                    ForEach(Array(section.items.enumerated()), id: \.offset) { _, item in
-                        card(for: item)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
+                let rows = [
+                    GridItem(.flexible(), spacing: 12),
+                    GridItem(.flexible(), spacing: 12)
+                ]
+                ScrollView(.horizontal, showsIndicators: false) {
+                    LazyHGrid(rows: rows, spacing: 12) {
+                        ForEach(section.items) { item in
+                            card(for: item)
+                                .frame(maxHeight: .infinity, alignment: .top)
+                        }
                     }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
                 }
-                .padding(.horizontal, 16)
             case .unknown:
                 VStack(spacing: 12) {
                     ForEach(Array(section.items.enumerated()), id: \.offset) { _, item in
@@ -55,7 +63,6 @@ struct SectionRenderer: View {
     @ViewBuilder
     func card(for item: ContentItem) -> some View {
         switch item {
-
         case .podcast(let id, let title, let description, let avatarURL, let episodeCount):
             PodcastCard(
                 title: title,

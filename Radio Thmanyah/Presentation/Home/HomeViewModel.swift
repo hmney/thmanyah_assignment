@@ -44,7 +44,7 @@ final class HomeViewModel: ObservableObject {
                 state = .init(phase: .content, sections: result.sections, nextPage: result.pagination.nextPage)
             }
         } catch {
-            state.phase = .error("حدث خطأ. حاول مرة أخرى.")
+            state.phase = .error("Error, try again!")
         }
         isLoadingFirst = false
     }

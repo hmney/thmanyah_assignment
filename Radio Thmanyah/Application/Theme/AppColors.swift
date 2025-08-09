@@ -13,7 +13,7 @@ enum AppColors {
     static let cardBackground = Color(hex: "#151515")
     static let primaryText = Color.white
     static let secondaryText = Color(hex: "#B6B6B6")
-    static let accentGold = Color(hex: "#F6C453") // placeholder, tweak later
+    static let accentGold = Color(hex: "#F7C23C")
 }
 
 // HEX to Color convenience

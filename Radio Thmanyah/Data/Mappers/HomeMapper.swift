@@ -34,7 +34,7 @@ struct HomeMapper {
         HomeSection(
             title: section.name,
             displayStyle: NormalizeDisplayStyle.from(section.type),
-            contentKind: .podcast,
+            contentKind: .podcast(section.contentType),
             order: section.order,
             items: items.map {
                 .podcast(
@@ -52,7 +52,7 @@ struct HomeMapper {
         HomeSection(
             title: section.name,
             displayStyle: NormalizeDisplayStyle.from(section.type),
-            contentKind: .episode,
+            contentKind: .episode(section.contentType),
             order: section.order,
             items: items.map {
                 .episode(
@@ -73,11 +73,11 @@ struct HomeMapper {
         HomeSection(
             title: section.name,
             displayStyle: NormalizeDisplayStyle.from(section.type),
-            contentKind: .audioBook,
+            contentKind: .audioBook(section.contentType),
             order: section.order,
             items: items.map {
                 .audioBook(
-                    id: $0.audiobookID,
+                    id: UUID().uuidString,
                     title: $0.name,
                     authorName: $0.authorName,
                     description: $0.description,
@@ -92,11 +92,11 @@ struct HomeMapper {
         HomeSection(
             title: section.name,
             displayStyle: NormalizeDisplayStyle.from(section.type),
-            contentKind: .audioArticle,
+            contentKind: .audioArticle(section.contentType),
             order: section.order,
             items: items.map {
                 .audioArticle(
-                    id: $0.articleID,
+                    id: UUID().uuidString,
                     title: $0.name,
                     authorName: $0.authorName,
                     description: $0.description,

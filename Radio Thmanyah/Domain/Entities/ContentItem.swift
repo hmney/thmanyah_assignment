@@ -8,7 +8,24 @@
 
 import Foundation
 
-enum ContentItem: Equatable {
+enum ContentItem: Equatable, Identifiable {
+    var id: String {
+        switch self {
+        case .podcast(let id, _, _, _, _):      return "podcast:\(id)"
+        case .episode(let id, _, _, _, _, _, _, _):   return "episode:\(id)"
+        case .audioBook(let id, _, _, _, _, _):    return "audiobook:\(id)"
+        case .audioArticle(let id, _, _, _, _, _): return "article:\(id)"
+        }
+    }
+    var backendID: String {
+        switch self {
+        case .podcast(let id, _, _, _, _),
+                .episode(let id, _, _, _, _, _, _, _),
+                .audioBook(let id, _, _, _, _, _),
+                .audioArticle(let id, _, _, _, _, _): return id
+        }
+    }
+
     case podcast(
         id: String,
         title: String,

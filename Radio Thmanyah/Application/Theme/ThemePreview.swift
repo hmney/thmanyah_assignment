@@ -47,7 +47,6 @@ struct ThemePreview: View {
                 .padding(.top, AppSpacing.l)
             }
         }
-        .environment(\.layoutDirection, .rightToLeft)
     }
     
     private func sectionHeader(_ text: String) -> some View {
@@ -70,7 +69,7 @@ struct ThemePreview: View {
                 .foregroundColor(AppColors.primaryText)
                 .lineLimit(1)
             
-            Text("\(ArabicFormatters.arabicIndicNumber(episodeCount)) حلقة")
+            Text("\(episodeCount) episodes")
                 .ibmFont(.regular, size: 14)
                 .foregroundColor(AppColors.secondaryText)
         }
@@ -93,7 +92,7 @@ struct ThemePreview: View {
                     .ibmFont(.regular, size: 14)
                     .foregroundColor(AppColors.secondaryText)
                 
-                Text(ArabicFormatters.duration(minutes: duration))
+                Text(Formatters.duration(seconds: duration))
                     .ibmFont(.regular, size: 14)
                     .foregroundColor(AppColors.secondaryText)
             }
