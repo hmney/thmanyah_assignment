@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9DDE4E092E47845C00BC5252 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9DDE4E082E47845C00BC5252 /* Kingfisher */; };
+		9DDE4E7D2E47D6C200BC5252 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 9DDE4E7C2E47D6C200BC5252 /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9DDE4E092E47845C00BC5252 /* Kingfisher in Frameworks */,
+				9DDE4E7D2E47D6C200BC5252 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +120,8 @@
 			name = "Radio Thmanyah";
 			packageProductDependencies = (
 				9DDE4E082E47845C00BC5252 /* Kingfisher */,
+				9DDE4E7C2E47D6C200BC5252 /* Alamofire */,
+				9DDE4E7E2E47D6C200BC5252 /* AlamofireDynamic */,
 			);
 			productName = "Radio Thmanyah";
 			productReference = 9D0053822E46131B00CD486F /* Radio Thmanyah.app */;
@@ -203,6 +207,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				9DDE4E072E47845C00BC5252 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				9DDE4E7B2E47D6C200BC5252 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9D0053832E46131B00CD486F /* Products */;
@@ -399,7 +404,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Radio Thmanyah/Radio_Thmanyah.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Radio Thmanyah/Resources/Radio_Thmanyah.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZJWG8YLNWZ;
@@ -440,7 +445,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Radio Thmanyah/Radio_Thmanyah.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Radio Thmanyah/Resources/Radio_Thmanyah.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ZJWG8YLNWZ;
@@ -616,6 +621,14 @@
 				minimumVersion = 8.5.0;
 			};
 		};
+		9DDE4E7B2E47D6C200BC5252 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -623,6 +636,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9DDE4E072E47845C00BC5252 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		9DDE4E7C2E47D6C200BC5252 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9DDE4E7B2E47D6C200BC5252 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		9DDE4E7E2E47D6C200BC5252 /* AlamofireDynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9DDE4E7B2E47D6C200BC5252 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = AlamofireDynamic;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

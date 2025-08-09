@@ -7,30 +7,52 @@
 
 
 import Foundation
+import Alamofire
 
 final class DIContainer {
     static let shared = DIContainer()
     private init() {}
-    
-    lazy var apiClient: APIClientProtocol = APIClient()
-    lazy var decoder: JSONDecoder =  {
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601Flexible
-        return decoder
+
+    // MARK: - Core
+    lazy var session: Session = {
+        let config = URLSessionConfiguration.default
+        config.waitsForConnectivity = true
+        config.timeoutIntervalForRequest = 20
+        config.timeoutIntervalForResource = 40
+        return Session(configuration: config)
+    }()
+
+    lazy var client: NetworkClient = AlamofireNetworkClient(session: session)
+
+    lazy var decoder: JSONDecoder = {
+        let d = JSONDecoder()
+        d.dateDecodingStrategy = .iso8601Flexible
+        d.keyDecodingStrategy = .useDefaultKeys
+        return d
     }()
 
 
-    lazy var homeRepository: HomeRepository = HomeRepositoryImpl(
-        apiClient: apiClient,
+    // MARK: - Data Sources
+    lazy var homeRemoteDataSource: HomeRemoteDataSource = HomeRemoteDataSourceImpl(
+        client: client,
         decoder: decoder
     )
-    
-    // Use Cases
+
+    // MARK: - Repositories
+    lazy var homeRepository: HomeRepository = HomeRepositoryImpl(
+        remote: homeRemoteDataSource
+    )
+
+    // MARK: - Use Cases
     lazy var loadHomeFirstPage = LoadHomeFirstPage(repository: homeRepository)
-    lazy var loadHomeNextPage = LoadHomeNextPage(repository: homeRepository)
+    lazy var loadHomeNextPage  = LoadHomeNextPage(repository: homeRepository)
 
-    @MainActor func makeHomeViewModel() -> HomeViewModel {
-        return HomeViewModel(loadHomeFirstPage: loadHomeFirstPage, loadHomeNextPage: loadHomeNextPage)
+    // MARK: - ViewModels
+    @MainActor
+    func makeHomeViewModel() -> HomeViewModel {
+        HomeViewModel(
+            loadHomeFirstPage: loadHomeFirstPage,
+            loadHomeNextPage: loadHomeNextPage
+        )
     }
-
 }

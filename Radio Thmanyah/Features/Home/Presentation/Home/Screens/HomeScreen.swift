@@ -38,7 +38,7 @@ struct HomeScreen: View {
             }
         case .content:
             ScrollView {
-                VStack(spacing: 24) {
+                LazyVStack(spacing: 24) {
                     HeaderView()
                     ContentTypeScrollBar(selected: $selectedContentFilter)
                     if displayedSections.isEmpty {
@@ -50,19 +50,25 @@ struct HomeScreen: View {
                     } else {
                         ForEach(displayedSections) { section in
                             SectionRenderer(section: section)
+                                .onAppear {
+                                    // when the last rendered section shows up, fetch next page
+                                    if section.id == displayedSections.last?.id {
+                                        vm.loadNextPageIfNeeded()
+                                    }
+                                }
                         }
-                        // TODO: we should handle pagination later
-                        //                    if vm.state.nextPage != nil {
-                        //                        HStack { Spacer(); ProgressView(); Spacer() }
-                        //                            .padding(.vertical, 8)
-                        //                            .onAppear {
-                        //                                vm.loadNextPageIfNeeded()
-                        //                            }
-                        //                    }
+
+                        // Paging footer
+                        if vm.isPaginating || vm.canLoadMore {
+                            HStack {
+                                Spacer()
+                                ProgressView().tint(AppColors.accentGold)
+                                Spacer()
+                            }
+                            .padding(.vertical, 12)
+                        }
 
                     }
-
-
                 }
             }
         }

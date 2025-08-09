@@ -14,7 +14,7 @@ enum ContentKind: Equatable {
     case audioBook(String)
     case audioArticle(String)
     case unknown(String)
-    
+
     /// Returns the API string for this kind (e.g., "podcast", "episode", "audio_book", "audio_article")
     var apiKey: String {
         switch self {
@@ -26,7 +26,7 @@ enum ContentKind: Equatable {
             return s
         }
     }
-    
+
     /// Convenience to check if this kind matches a UI filter.
     func matches(_ filter: ContentFilter) -> Bool {
         switch filter {
