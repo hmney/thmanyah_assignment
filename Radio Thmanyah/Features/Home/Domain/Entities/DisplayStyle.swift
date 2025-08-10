@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum DisplayStyle: Equatable {
+enum DisplayStyle: Equatable, Hashable {
     case queue
     case square
     case bigSquare

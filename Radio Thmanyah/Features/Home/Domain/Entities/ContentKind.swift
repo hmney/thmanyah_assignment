@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum ContentKind: Equatable {
+enum ContentKind: Equatable, Hashable {
     case podcast(String)
     case episode(String)
     case audioBook(String)

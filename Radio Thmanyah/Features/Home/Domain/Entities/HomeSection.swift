@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct HomeSection: Equatable, Identifiable {
+struct HomeSection: Equatable, Identifiable, Hashable {
     let id: UUID = UUID()
     let title: String
     let displayStyle: DisplayStyle

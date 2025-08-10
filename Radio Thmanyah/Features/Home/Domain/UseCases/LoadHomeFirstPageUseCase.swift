@@ -5,7 +5,6 @@
 //  Created by Houssam-Eddine Mney on 8/8/2025.
 //
 
-
 import Foundation
 
 struct LoadHomeFirstPageUseCase {

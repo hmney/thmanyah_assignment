@@ -5,10 +5,9 @@
 //  Created by Houssam-Eddine Mney on 8/8/2025.
 //
 
-
 import Foundation
 
-enum ContentItem: Equatable, Identifiable {
+enum ContentItem: Equatable, Identifiable, Hashable {
     var id: String {
         switch self {
         case .podcast(let id, _, _, _, _):      return "podcast:\(id)"
@@ -17,6 +16,7 @@ enum ContentItem: Equatable, Identifiable {
         case .audioArticle(let id, _, _, _, _, _): return "article:\(id)"
         }
     }
+    
     var backendID: String {
         switch self {
         case .podcast(let id, _, _, _, _),
