@@ -1,5 +1,5 @@
 //
-//  LoadHomeNextPage.swift
+//  LoadHomeNextPageUseCase.swift
 //  Radio Thmanyah
 //
 //  Created by Houssam-Eddine Mney on 8/8/2025.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct LoadHomeNextPage {
+struct LoadHomeNextPageUseCase {
     private let repository: HomeRepository
 
     init(repository: HomeRepository) {

@@ -38,14 +38,17 @@ final class DIContainer {
         decoder: decoder
     )
 
+    lazy var localRemoteDataSource: HomeLocalDataSource = HomeLocalDataSourceImpl()
+
     // MARK: - Repositories
     lazy var homeRepository: HomeRepository = HomeRepositoryImpl(
-        remote: homeRemoteDataSource
+        remote: homeRemoteDataSource,
+        local: localRemoteDataSource
     )
 
     // MARK: - Use Cases
-    lazy var loadHomeFirstPage = LoadHomeFirstPage(repository: homeRepository)
-    lazy var loadHomeNextPage  = LoadHomeNextPage(repository: homeRepository)
+    lazy var loadHomeFirstPage = LoadHomeFirstPageUseCase(repository: homeRepository)
+    lazy var loadHomeNextPage  = LoadHomeNextPageUseCase(repository: homeRepository)
 
     // MARK: - ViewModels
     @MainActor

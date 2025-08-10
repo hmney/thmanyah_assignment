@@ -5,7 +5,7 @@
 //  Created by Houssam-Eddine Mney on 8/8/2025.
 //
 
-struct PaginationDTO: Decodable {
+struct PaginationDTO: Codable {
     let nextPage: String?
     let totalPages: Int
 

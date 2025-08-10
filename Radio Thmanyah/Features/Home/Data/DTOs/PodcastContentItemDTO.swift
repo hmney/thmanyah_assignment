@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct PodcastContentItemDTO: Decodable {
+struct PodcastContentItemDTO: Codable {
     let podcastID: String
     let name: String
     let description: String?

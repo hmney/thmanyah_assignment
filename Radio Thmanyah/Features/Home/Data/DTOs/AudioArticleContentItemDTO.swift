@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct AudioArticleContentItemDTO: Decodable {
+struct AudioArticleContentItemDTO: Codable {
     let articleID: String
     let name: String
     let authorName: String?

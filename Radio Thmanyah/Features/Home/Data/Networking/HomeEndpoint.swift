@@ -5,14 +5,6 @@
 //  Created by Houssam-Eddine Mney on 9/8/2025.
 //
 
-
-import Foundation
-import Alamofire
-
-//
-//  HomeEndpoint.swift
-//
-
 import Foundation
 import Alamofire
 
@@ -42,7 +34,6 @@ enum HomeEndpoint: Endpoint {
             return nil
         case .nextPage(let raw):
             let parsed = Self.parse(raw)
-            // Convert query items to Alamofire Parameters
             var params: Parameters = [:]
             parsed.queryItems.forEach { item in
                 if let v = item.value { params[item.name] = v }

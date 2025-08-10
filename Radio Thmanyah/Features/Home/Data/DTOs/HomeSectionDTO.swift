@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct HomeSectionsResponseDTO: Decodable {
+struct HomeSectionsResponseDTO: Codable {
     let sections: [SectionWrapperDTO]
     let pagination: PaginationDTO
 
@@ -17,7 +17,7 @@ struct HomeSectionsResponseDTO: Decodable {
     }
 }
 
-struct SectionWrapperDTO: Decodable {
+struct SectionWrapperDTO: Codable {
     let name: String
     let type: String
     let contentType: String
@@ -36,7 +36,7 @@ struct SectionWrapperDTO: Decodable {
         name = try container.decode(String.self, forKey: .name)
         type = try container.decode(String.self, forKey: .type)
         contentType = try container
-            .decode(String.self, forKey: .contentType) 
+            .decode(String.self, forKey: .contentType)
 
         order = try container.decode(Int.self, forKey: .order)
 
@@ -61,7 +61,25 @@ struct SectionWrapperDTO: Decodable {
             print("⚠️ Unknown content type: \(contentType)")
             content = .podcast([])
         }
+    }
 
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
 
+        try container.encode(name, forKey: .name)
+        try container.encode(type, forKey: .type)
+        try container.encode(contentType, forKey: .contentType)
+        try container.encode(order, forKey: .order)
+
+        switch content {
+        case .podcast(let items):
+            try container.encode(items, forKey: .content)
+        case .episode(let items):
+            try container.encode(items, forKey: .content)
+        case .audiobook(let items):
+            try container.encode(items, forKey: .content)
+        case .audioArticle(let items):
+            try container.encode(items, forKey: .content)
+        }
     }
 }

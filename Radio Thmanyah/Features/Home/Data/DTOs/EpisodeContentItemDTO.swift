@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct EpisodeContentItemDTO: Decodable {
+struct EpisodeContentItemDTO: Codable {
     let podcastPopularityScore: Int?
     let podcastPriority: Int?
     let episodeID: String
@@ -67,4 +67,4 @@ struct EpisodeContentItemDTO: Decodable {
     }
 }
 
-struct Chapter: Decodable {}
+struct Chapter: Codable {}

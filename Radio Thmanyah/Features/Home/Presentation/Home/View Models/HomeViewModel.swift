@@ -17,8 +17,8 @@ final class HomeViewModel: ObservableObject {
         currentPage < totalPages
     }
 
-    private let loadHomeFirstPage: LoadHomeFirstPage
-    private let loadHomeNextPage: LoadHomeNextPage
+    private let loadHomeFirstPage: LoadHomeFirstPageUseCase
+    private let loadHomeNextPage: LoadHomeNextPageUseCase
 
     private var isLoadingFirst = false
 
@@ -26,7 +26,7 @@ final class HomeViewModel: ObservableObject {
     private var currentPage: Int = 1
     private var totalPages: Int = 1
 
-    init(loadHomeFirstPage: LoadHomeFirstPage, loadHomeNextPage: LoadHomeNextPage) {
+    init(loadHomeFirstPage: LoadHomeFirstPageUseCase, loadHomeNextPage: LoadHomeNextPageUseCase) {
         self.loadHomeFirstPage = loadHomeFirstPage
         self.loadHomeNextPage = loadHomeNextPage
     }

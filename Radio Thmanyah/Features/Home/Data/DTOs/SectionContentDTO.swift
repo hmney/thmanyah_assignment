@@ -5,7 +5,7 @@
 //  Created by Houssam-Eddine Mney on 8/8/2025.
 //
 
-enum SectionContentDTO {
+enum SectionContentDTO: Codable {
     case podcast([PodcastContentItemDTO])
     case episode([EpisodeContentItemDTO])
     case audiobook([AudiobookContentItemDTO])
