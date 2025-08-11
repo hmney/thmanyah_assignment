@@ -8,9 +8,9 @@
 import Foundation
 
 struct LoadHomeFirstPageUseCase {
-    private let repository: HomeRepository
+    private let repository: HomeRepositoryProtocol
 
-    init(repository: HomeRepository) {
+    init(repository: HomeRepositoryProtocol) {
         self.repository = repository
     }
 

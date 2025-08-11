@@ -22,6 +22,6 @@ struct SectionListScreen: View {
             .padding(.bottom, 24)
         }
         .frame(maxWidth: .infinity)
-        .background(.black)
+        .background(AppColors.background)
     }
 }

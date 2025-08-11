@@ -1,5 +1,5 @@
 //
-//  HeaderView.swift
+//  HomeHeaderView.swift
 //  Radio Thmanyah
 //
 //  Created by Houssam-Eddine Mney on 9/8/2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HeaderView: View {
+struct HomeHeaderView: View {
     var body: some View {
         HStack(spacing: 8) {
             Image("profile_picture")
@@ -28,5 +28,5 @@ struct HeaderView: View {
 }
 
 #Preview {
-    HeaderView()
+    HomeHeaderView()
 }

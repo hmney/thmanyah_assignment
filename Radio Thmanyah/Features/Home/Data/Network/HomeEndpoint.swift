@@ -15,6 +15,10 @@ enum HomeEndpoint: Endpoint {
 
     // MARK: - Endpoint
 
+    var baseURL: URL {
+        URL(string: "https://api-v2-b2sit6oh3a-uc.a.run.app")!
+    }
+    
     var path: String {
         switch self {
         case .firstPage:

@@ -9,12 +9,13 @@
 import SwiftUI
 
 enum AppColors {
-    static let background = Color(hex: "#0B0B0B")
+    static let background = Color.black
     static let cardBackground = Color(hex: "#151515")
     static let primaryText = Color.white
     static let secondaryText = Color(hex: "#B6B6B6")
     static let accentGold = Color(hex: "#F7C23C")
     static let splashBackground = Color(hex: "#DF5655")
+    static let textFieldBackground = Color(hex: "#1f1f1f")
 }
 
 // HEX to Color convenience

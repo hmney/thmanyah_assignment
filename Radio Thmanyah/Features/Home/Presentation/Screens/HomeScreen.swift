@@ -11,9 +11,6 @@ import SwiftUI
 struct HomeScreen: View {
     @ObservedObject var viewModel: HomeViewModel
 
-    @State private var showSearch = false
-    @State private var selectedContentFilter: ContentFilter = .all
-
     var body: some View {
         content
             .background(AppColors.background)
@@ -24,7 +21,11 @@ struct HomeScreen: View {
     private var content: some View {
         switch viewModel.state.phase {
         case .idle, .loading:
-            ProgressView().tint(AppColors.accentGold)
+            VStack {
+                LottieView(animationName: "Loader")
+                    .frame(width: 60, height: 60)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         case .empty:
             Text("There's no content!")
                 .ibmFont(.medium, size: 16)
@@ -40,30 +41,35 @@ struct HomeScreen: View {
         case .content:
             ScrollView {
                 LazyVStack(spacing: 24) {
-                    HeaderView()
-                    ContentTypeScrollBar(selected: $selectedContentFilter)
-                    if displayedSections.isEmpty {
-                        Text("No results for \(selectedContentFilter.title).")
-                            .ibmFont(.medium, size: 16)
-                            .foregroundColor(AppColors.secondaryText)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .padding(.vertical, 24)
+                    HomeHeaderView()
+                    ContentTypeScrollBar(
+                        selected: viewModel.selectedFilterBinding
+                    )
+                    if viewModel.displayedSections.isEmpty {
+                        Text(
+                            "No results for \(viewModel.state.selectedContentFilter.title)."
+                        )
+                        .ibmFont(.medium, size: 16)
+                        .foregroundColor(AppColors.secondaryText)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.vertical, 24)
                     } else {
-                        ForEach(displayedSections) { section in
+                        ForEach(viewModel.displayedSections) { section in
                             SectionRenderer(section: section, action: {
                                 viewModel.onNavigate?(.section(section: section))
                             })
-                                .onAppear {
-                                    if section.id == displayedSections.last?.id {
-                                        viewModel.loadNextPageIfNeeded()
-                                    }
+                            .onAppear {
+                                if section.id == viewModel.displayedSections.last?.id {
+                                    viewModel.loadNextPageIfNeeded()
                                 }
+                            }
                         }
-                        
-                        if viewModel.isPaginating || viewModel.canLoadMore {
+
+                        if viewModel.state.isPaginating || viewModel.canLoadMore {
                             HStack {
                                 Spacer()
-                                ProgressView().tint(AppColors.accentGold)
+                                LottieView(animationName: "Loader")
+                                    .frame(width: 60, height: 60)
                                 Spacer()
                             }
                             .padding(.vertical, 12)
@@ -73,9 +79,5 @@ struct HomeScreen: View {
                 }
             }
         }
-    }
-
-    private var displayedSections: [HomeSection] {
-        viewModel.state.sections.filter { $0.contentKind.matches(selectedContentFilter) }
     }
 }

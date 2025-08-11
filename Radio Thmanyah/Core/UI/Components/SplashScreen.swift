@@ -16,7 +16,7 @@ struct SplashScreen: View {
             AppColors.splashBackground.ignoresSafeArea()
 
             VStack {
-                Image("splash_screen_logo")
+                Image("logo_splash")
                     .resizable()
                     .frame(width: 140, height: 140)
                     .scaleEffect(scale)

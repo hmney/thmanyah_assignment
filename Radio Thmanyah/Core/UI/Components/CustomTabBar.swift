@@ -24,6 +24,7 @@ struct CustomTabBar: View {
                 }
             }
         }
+        .padding(.horizontal)
         .background(
             LinearGradient(
                 gradient: Gradient(colors: [.black.opacity(0.75), .black]),
@@ -46,7 +47,6 @@ private struct TabButton: View {
                 .renderingMode(.template)
                 .foregroundStyle(.white)
                 .frame(width: 24, height: 24)
-                .font(.system(size: 18, weight: .semibold))
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 4)
                 .contentShape(Rectangle())

@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class HomeRepositoryImpl: HomeRepository {
+final class HomeRepository: HomeRepositoryProtocol {
     private let remote: HomeRemoteDataSource
     private let local: HomeLocalDataSource
     private let cacheExpirationInterval: TimeInterval = 60 * 5 // 5 minutes

@@ -50,7 +50,9 @@ final class AppCoordinator: ObservableObject, Coordinator {
             return AnyView(coordinator.start())
             
         case .search:
-            return AnyView(Text("Search Coming Soon"))
+            let coordinator = SearchCoordinator(container: container)
+            tabCoordinators[tab] = coordinator
+            return AnyView(coordinator.start())
 
         case .square:
             return AnyView(Text("Square Coming Soon"))

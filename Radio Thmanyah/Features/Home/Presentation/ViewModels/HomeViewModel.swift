@@ -7,14 +7,28 @@
 
 
 import Foundation
+import SwiftUI
+
+
+protocol HomeViewModelProtocol: ViewModelProtocol { }
 
 @MainActor
-final class HomeViewModel: ObservableObject {
+final class HomeViewModel: HomeViewModelProtocol {
     @Published private(set) var state = HomeViewState()
-    @Published private(set) var isPaginating = false
 
     var canLoadMore: Bool {
         currentPage < totalPages
+    }
+
+    var displayedSections: [HomeSection] {
+        state.sections.filter { $0.contentKind.matches(state.selectedContentFilter) }
+    }
+
+    var selectedFilterBinding: Binding<ContentFilter> {
+        Binding(
+            get: { self.state.selectedContentFilter },
+            set: { [weak self] in self?.setFilter($0) }
+        )
     }
 
     var onNavigate: ((HomeRoute) -> Void)?
@@ -25,8 +39,6 @@ final class HomeViewModel: ObservableObject {
 
     // MARK: - Local states
     private var isLoadingFirst = false
-
-    // client-driven pagination
     private var currentPage: Int = 1
     private var totalPages: Int = 1
 
@@ -35,6 +47,7 @@ final class HomeViewModel: ObservableObject {
         self.loadHomeNextPage = container.resolve(LoadHomeNextPageUseCase.self)
     }
 
+    // MARK: - Public Methods
     func onAppear() {
         guard case .idle = state.phase else { return }
         Task { await load() }
@@ -42,6 +55,37 @@ final class HomeViewModel: ObservableObject {
 
     func refresh() {
         Task { await load() }
+    }
+
+    func loadNextPageIfNeeded() {
+        guard case .content = state.phase else { return }
+        guard !state.isPaginating else { return }
+        guard currentPage < totalPages, let nextPage = state.nextPage else {
+            return
+        }
+
+        let targetPage = currentPage + 1
+
+        state.isPaginating = true
+
+        Task {
+            defer { state.isPaginating = false }
+            do {
+                let result = try await loadHomeNextPage.execute(path: nextPage)
+
+                let fresh = result.sections
+                if !fresh.isEmpty {
+                    state.sections.append(contentsOf: fresh)
+                }
+
+                currentPage = targetPage
+                state.nextPage = result.pagination.nextPage
+            } catch {
+                #if DEBUG
+                print("❌ failed loading page \(targetPage): \(error)")
+                #endif
+            }
+        }
     }
 
     private func load() async {
@@ -72,38 +116,10 @@ final class HomeViewModel: ObservableObject {
         }
     }
 
-    func loadNextPageIfNeeded() {
-        guard case .content = state.phase else { return }
-        guard !isPaginating else { return }
-        guard currentPage < totalPages, let nextPage = state.nextPage else {
-            return
-        }
-
-        let targetPage = currentPage + 1
-
-        isPaginating = true
-
-        Task {
-            defer { isPaginating = false }
-            do {
-                let result = try await loadHomeNextPage.execute(path: nextPage)
-
-                let fresh = result.sections
-                if !fresh.isEmpty {
-                    state.sections.append(contentsOf: fresh)
-                }
-
-                currentPage = targetPage
-                state.nextPage = result.pagination.nextPage
-            } catch {
-                #if DEBUG
-                print("❌ failed loading page \(targetPage): \(error)")
-                #endif
-            }
-        }
+    private func setFilter(_ filter: ContentFilter) {
+        state.selectedContentFilter = filter
     }
 }
-
 
 enum HomePhase: Equatable {
     case idle, loading, content, empty, error(String)
@@ -113,4 +129,6 @@ struct HomeViewState: Equatable {
     var phase: HomePhase = .idle
     var sections: [HomeSection] = []
     var nextPage: String? = nil
+    var selectedContentFilter: ContentFilter = .all
+    var isPaginating = false
 }

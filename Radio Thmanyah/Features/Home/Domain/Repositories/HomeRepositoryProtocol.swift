@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol HomeRepository {
+protocol HomeRepositoryProtocol {
     func loadFirstPage() async throws -> (sections: [HomeSection], pagination: Pagination)
     func loadNextPage(path: String) async throws -> (sections: [HomeSection], pagination: Pagination)
 }

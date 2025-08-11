@@ -21,7 +21,7 @@ struct DurationChip: View {
 
             Text(Formatters.duration(seconds: durationInSeconds))
                 .foregroundColor(.white)
-                .font(.system(size: 12, weight: .medium))
+                .ibmFont(.medium, size: 12)
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 4)

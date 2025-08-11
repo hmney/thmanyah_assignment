@@ -18,14 +18,9 @@ public protocol Endpoint {
 }
 
 public extension Endpoint {
-    var baseURL: URL {
-        URL(string: "https://api-v2-b2sit6oh3a-uc.a.run.app")!
-    }
-
     var url: URL {
         baseURL.appendingPathComponent(path)
     }
-
     var parameters: Parameters? { nil }
     var encoding: ParameterEncoding { URLEncoding.default }
     var headers: HTTPHeaders? { nil }
