@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9D1C01D72E49380F006354C5 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 9D1C01D62E49380F006354C5 /* Lottie */; };
+		9D1C03162E4AA427006354C5 /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 9D1C03152E4AA427006354C5 /* Shimmer */; };
 		9DDE4E092E47845C00BC5252 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9DDE4E082E47845C00BC5252 /* Kingfisher */; };
 		9DDE4E7D2E47D6C200BC5252 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 9DDE4E7C2E47D6C200BC5252 /* Alamofire */; };
 /* End PBXBuildFile section */
@@ -57,8 +59,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D1C03162E4AA427006354C5 /* Shimmer in Frameworks */,
 				9DDE4E092E47845C00BC5252 /* Kingfisher in Frameworks */,
 				9DDE4E7D2E47D6C200BC5252 /* Alamofire in Frameworks */,
+				9D1C01D72E49380F006354C5 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,6 +126,8 @@
 				9DDE4E082E47845C00BC5252 /* Kingfisher */,
 				9DDE4E7C2E47D6C200BC5252 /* Alamofire */,
 				9DDE4E7E2E47D6C200BC5252 /* AlamofireDynamic */,
+				9D1C01D62E49380F006354C5 /* Lottie */,
+				9D1C03152E4AA427006354C5 /* Shimmer */,
 			);
 			productName = "Radio Thmanyah";
 			productReference = 9D0053822E46131B00CD486F /* Radio Thmanyah.app */;
@@ -208,6 +214,8 @@
 			packageReferences = (
 				9DDE4E072E47845C00BC5252 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				9DDE4E7B2E47D6C200BC5252 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				9D1C01D52E49380F006354C5 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				9D1C03142E4AA427006354C5 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9D0053832E46131B00CD486F /* Products */;
@@ -613,6 +621,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		9D1C01D52E49380F006354C5 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.2;
+			};
+		};
+		9D1C03142E4AA427006354C5 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/markiv/SwiftUI-Shimmer";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.1;
+			};
+		};
 		9DDE4E072E47845C00BC5252 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
@@ -632,6 +656,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		9D1C01D62E49380F006354C5 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9D1C01D52E49380F006354C5 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		9D1C03152E4AA427006354C5 /* Shimmer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9D1C03142E4AA427006354C5 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */;
+			productName = Shimmer;
+		};
 		9DDE4E082E47845C00BC5252 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9DDE4E072E47845C00BC5252 /* XCRemoteSwiftPackageReference "Kingfisher" */;

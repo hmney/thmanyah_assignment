@@ -13,13 +13,19 @@ public final class DIContainer {
 
     private var factories: [ObjectIdentifier: Factory] = [:]
     private var singletons: [ObjectIdentifier: Any] = [:]
+    private var singletonKeys: Set<ObjectIdentifier> = []
 
     public init() {}
 
     public func register<S>(_ type: S.Type, scopeSingleton: Bool = true, factory: @escaping (DIContainer) -> S) {
         let key = ObjectIdentifier(type)
         factories[key] = { c in factory(c) }
-        if scopeSingleton { singletons[key] = nil } // reserve slot
+        if scopeSingleton {
+            singletonKeys.insert(key)
+        } else {
+            singletonKeys.remove(key)
+            singletons.removeValue(forKey: key)
+        }
     }
 
     public func resolve<S>(_ type: S.Type = S.self) -> S {
@@ -31,7 +37,9 @@ public final class DIContainer {
             fatalError("No factory for \(type)")
         }
         let instance = factory(self) as! S
-        if singletons.keys.contains(key) { singletons[key] = instance }
+        if singletonKeys.contains(key) {
+            singletons[key] = instance
+        }
         return instance
     }
 
@@ -39,7 +47,8 @@ public final class DIContainer {
     public func child(_ configure: (DIContainer) -> Void) -> DIContainer {
         let child = DIContainer()
         child.factories = factories
-        child.singletons = singletons // share singletons by default
+        child.singletons = singletons
+        child.singletonKeys = singletonKeys               
         configure(child)
         return child
     }

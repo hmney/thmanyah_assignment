@@ -7,9 +7,9 @@
 
 
 class SearchRepository: SearchRepositoryProtocol {
-    private let remote: SearchRemoteDataSource
+    private let remote: SearchRemoteDataSourceProtocol
 
-    init(remote: SearchRemoteDataSource) {
+    init(remote: SearchRemoteDataSourceProtocol) {
         self.remote = remote
     }
     

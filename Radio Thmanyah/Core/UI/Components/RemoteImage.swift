@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Kingfisher
+import Shimmer
 
 struct RemoteImage: View {
     let url: URL?
@@ -46,14 +47,10 @@ struct RemoteImage: View {
     
     @ViewBuilder
     private var placeholder: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                .fill(Color(.secondarySystemBackground))
-            ProgressView()
-        }
-        .frame(width: size.width, height: size.height)
-        .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
-        .compositingGroup()
+        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+            .fill(Color(.secondarySystemBackground))
+            .frame(width: size.width, height: size.height)
+            .shimmering()
     }
 }
 

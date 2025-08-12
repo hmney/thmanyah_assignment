@@ -7,7 +7,26 @@
 
 import Foundation
 
-protocol HomeLocalDataSource {
-    func saveFirstPage(_ data: CachedData) async throws
-    func fetchFirstPage() async throws -> CachedData?
+final class HomeLocalDataSource: HomeLocalDataSourceProtocol {
+    private let userDefaults: UserDefaults
+    private static let cacheKey = "homeFirstPageCache"
+
+    init(userDefaults: UserDefaults = .standard) {
+        self.userDefaults = userDefaults
+    }
+
+    func saveFirstPage(_ data: CachedData) async throws {
+        let encoder = JSONEncoder()
+        let encodedData = try encoder.encode(data)
+        userDefaults.set(encodedData, forKey: Self.cacheKey)
+    }
+
+    func fetchFirstPage() async throws -> CachedData? {
+        guard let encodedData = userDefaults.data(forKey: Self.cacheKey) else {
+            return nil
+        }
+        let decoder = JSONDecoder()
+        let cachedData = try decoder.decode(CachedData.self, from: encodedData)
+        return cachedData
+    }
 }

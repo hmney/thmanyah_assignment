@@ -56,22 +56,20 @@ struct SearchScreen: View {
                 .frame(width: 16, height: 16)
                 .foregroundStyle(.white)
 
-            TextField("", text: Binding(
+            TextField(text: Binding(
                 get: { viewModel.state.query },
-                set: { viewModel.setQuery($0) }
-            ), prompt: Text("Find a show, a book, a person...")
-                .foregroundStyle(Color(hex: "#5C5C5E"))
-//                .ibmFont(.semiBold, size: 16)
-            )
+                set: { viewModel.setQuery($0) })
+            ) {
+                Text("Find a show, a book, a person...")
+                    .foregroundStyle(Color(hex: "#5C5C5E"))
+                    .ibmFont(.semiBold, size: 16)
+            }
             .foregroundStyle(.white)
             .focused($isSearchFieldFocused)
             .textInputAutocapitalization(.none)
             .disableAutocorrection(true)
             .textFieldStyle(.plain)
             .submitLabel(.search)
-//            .onSubmit {
-//                Task { await viewModel.performSearch(with: viewModel.state.query) }
-//            }
 
             if !viewModel.state.query.isEmpty {
                 Button {
@@ -112,7 +110,6 @@ struct SearchScreen: View {
         case .empty:
             emptyStateView
         case .error:
-            // Keep prior content if available, otherwise empty
             if let results = viewModel.state.results {
                 searchResultsView(results)
             } else if let data = viewModel.state.initialSections {

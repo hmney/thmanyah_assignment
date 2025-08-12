@@ -33,17 +33,17 @@ enum AppDI {
         }
 
         // Data sources
-        c.register(HomeRemoteDataSource.self) { c in
-            HomeRemoteDataSourceImpl(
+        c.register(HomeRemoteDataSourceProtocol.self) { c in
+            HomeRemoteDataSource(
                 client: c.resolve(),
                 decoder: c.resolve()
             )
         }
-        c.register(HomeLocalDataSource.self) { _ in
-            HomeLocalDataSourceImpl()
+        c.register(HomeLocalDataSourceProtocol.self) { _ in
+            HomeLocalDataSource()
         }
-        c.register(SearchRemoteDataSource.self) { c in
-            SearchRemoteDataSourceImpl(
+        c.register(SearchRemoteDataSourceProtocol.self) { c in
+            SearchRemoteDataSource(
                 client: c.resolve(),
                 decoder: c.resolve()
             )
@@ -58,10 +58,10 @@ enum AppDI {
         }
 
         // Use cases (scoped as factories so they’re lightweight)
-        c.register(LoadHomeFirstPageUseCase.self, scopeSingleton: false) { c in
+        c.register(LoadHomeFirstPageUseCaseProtocol.self, scopeSingleton: false) { c in
             LoadHomeFirstPageUseCase(repository: c.resolve())
         }
-        c.register(LoadHomeNextPageUseCase.self, scopeSingleton: false) { c in
+        c.register(LoadHomeNextPageUseCaseProtocol.self, scopeSingleton: false) { c in
             LoadHomeNextPageUseCase(repository: c.resolve())
         }
         c.register(SearchUseCaseProtocol.self, scopeSingleton: false) { c in

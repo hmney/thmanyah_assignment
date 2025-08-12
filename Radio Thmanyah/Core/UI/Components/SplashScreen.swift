@@ -15,15 +15,23 @@ struct SplashScreen: View {
         ZStack {
             AppColors.splashBackground.ignoresSafeArea()
 
-            VStack {
                 Image("logo_splash")
                     .resizable()
                     .frame(width: 140, height: 140)
                     .scaleEffect(scale)
                     .opacity(opacity)
+
+            VStack {
+                Spacer()
+
+                Text("Made with hope by Houssam-Eddine Mney 🤍")
+                    .foregroundStyle(.white)
+                    .padding(.bottom, 20)
             }
         }
         .onAppear {
+            scale = 0.5
+            opacity = 0
             withAnimation(.easeInOut(duration: 1.5)) {
                 scale = 1.0
                 opacity = 1.0

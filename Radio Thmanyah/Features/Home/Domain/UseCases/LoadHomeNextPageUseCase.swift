@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct LoadHomeNextPageUseCase {
+protocol LoadHomeNextPageUseCaseProtocol {
+    func execute(path: String) async throws -> (sections: [HomeSection], pagination: Pagination)
+}
+
+class LoadHomeNextPageUseCase: LoadHomeNextPageUseCaseProtocol {
     private let repository: HomeRepositoryProtocol
 
     init(repository: HomeRepositoryProtocol) {

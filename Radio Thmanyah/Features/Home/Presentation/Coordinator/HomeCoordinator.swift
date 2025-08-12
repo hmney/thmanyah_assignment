@@ -31,9 +31,7 @@ final class HomeCoordinator: ObservableObject, Coordinator {
             content: {
                 HomeScreen(viewModel: self.viewModel)
             },
-            destinationBuilder: buildDestination,
-            sheetBuilder: buildSheet,
-            fullScreenBuilder: buildFullScreen
+            destinationBuilder: buildDestination
         )
     }
 
@@ -44,25 +42,10 @@ final class HomeCoordinator: ObservableObject, Coordinator {
         }
     }
 
-    private func buildDestination(for route: HomeRoute) -> AnyView {
+    @ViewBuilder
+    private func buildDestination(for route: HomeRoute) -> some View {
         switch route {
-        case .section(let data): AnyView(SectionListScreen(section: data))
-        }
-    }
-
-    private func buildSheet(for route: HomeRoute) -> AnyView {
-        switch route {
-            // Add Destination views here
-        default :
-            fatalError("Unsupported route: \(route)")
-        }
-    }
-
-    private func buildFullScreen(for route: HomeRoute) -> AnyView {
-        switch route {
-            // Add Destination views here
-        default :
-            fatalError("Unsupported route: \(route)")
+        case .section(let data): SectionListScreen(section: data)
         }
     }
 }

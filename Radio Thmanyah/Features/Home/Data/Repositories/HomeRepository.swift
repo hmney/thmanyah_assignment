@@ -8,11 +8,11 @@
 import Foundation
 
 final class HomeRepository: HomeRepositoryProtocol {
-    private let remote: HomeRemoteDataSource
-    private let local: HomeLocalDataSource
+    private let remote: HomeRemoteDataSourceProtocol
+    private let local: HomeLocalDataSourceProtocol
     private let cacheExpirationInterval: TimeInterval = 60 * 5 // 5 minutes
 
-    init(remote: HomeRemoteDataSource, local: HomeLocalDataSource) {
+    init(remote: HomeRemoteDataSourceProtocol, local: HomeLocalDataSourceProtocol) {
         self.remote = remote
         self.local = local
     }

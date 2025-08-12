@@ -34,8 +34,8 @@ final class HomeViewModel: HomeViewModelProtocol {
     var onNavigate: ((HomeRoute) -> Void)?
 
     // MARK: - Dependencies
-    private let loadHomeFirstPage: LoadHomeFirstPageUseCase
-    private let loadHomeNextPage: LoadHomeNextPageUseCase
+    private let loadHomeFirstPage: LoadHomeFirstPageUseCaseProtocol
+    private let loadHomeNextPage: LoadHomeNextPageUseCaseProtocol
 
     // MARK: - Local states
     private var isLoadingFirst = false
@@ -43,8 +43,10 @@ final class HomeViewModel: HomeViewModelProtocol {
     private var totalPages: Int = 1
 
     init(container: DIContainer) {
-        self.loadHomeFirstPage = container.resolve(LoadHomeFirstPageUseCase.self)
-        self.loadHomeNextPage = container.resolve(LoadHomeNextPageUseCase.self)
+        self.loadHomeFirstPage = container
+            .resolve(LoadHomeFirstPageUseCaseProtocol.self)
+        self.loadHomeNextPage = container
+            .resolve(LoadHomeNextPageUseCaseProtocol.self)
     }
 
     // MARK: - Public Methods
