@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct SplashScreen: View {
-    @State private var scale: CGFloat = 0.5
-    @State private var opacity: Double = 0
-    
+    @State private var logoScale: CGFloat = 1.0
+    @State private var logoOpacity: Double = 1.0
+
     var body: some View {
         ZStack {
             AppColors.splashBackground.ignoresSafeArea()
 
-                Image("logo_splash")
-                    .resizable()
-                    .frame(width: 140, height: 140)
-                    .scaleEffect(scale)
-                    .opacity(opacity)
+            Image("logo_splash")
+                .resizable()
+                .frame(width: 140, height: 140)
+                .scaleEffect(logoScale)
+                .opacity(logoOpacity)
 
             VStack {
                 Spacer()
@@ -27,14 +27,13 @@ struct SplashScreen: View {
                 Text("Made with hope by Houssam-Eddine Mney 🤍")
                     .foregroundStyle(.white)
                     .padding(.bottom, 20)
+                    .opacity(logoOpacity)
             }
         }
-        .onAppear {
-            scale = 0.5
-            opacity = 0
-            withAnimation(.easeInOut(duration: 1.5)) {
-                scale = 1.0
-                opacity = 1.0
+        .onDisappear {
+            withAnimation(.easeIn(duration: 0.8)) {
+                logoScale = 1.5
+                logoOpacity = 0.0
             }
         }
     }

@@ -16,14 +16,16 @@ struct AppRootView: View {
         Group {
             if appViewModel.shouldShowSplashScreen {
                 SplashScreen()
+                    .transition(.opacity)
             } else {
                 MainTabView(
                     coordinator: coordinator,
                     appViewModel: appViewModel
                 )
+                .transition(.opacity)
             }
         }
-        
+        .animation(.easeInOut(duration: 1), value: appViewModel.shouldShowSplashScreen)
         .alert("Network Error",
                isPresented: Binding(
                 get: { appViewModel.networkStatus == .disconnected },
