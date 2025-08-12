@@ -42,7 +42,9 @@ struct HomeMapper {
                     title: $0.name,
                     description: $0.description,
                     avatarURL: URL(string: $0.avatarURL ?? ""),
-                    episodeCount: $0.episodeCount
+                    episodeCount: $0.episodeCount,
+                    duration: $0.duration,
+                    releaseDate: Formatters.randomFormattedDate()
                 )
             }
         )
@@ -82,7 +84,8 @@ struct HomeMapper {
                     authorName: $0.authorName,
                     description: $0.description,
                     avatarURL: URL(string: $0.avatarURL ?? ""),
-                    duration: $0.duration
+                    duration: $0.duration,
+                    releaseDate: Formatters.randomFormattedDate()
                 )
             }
         )
@@ -101,7 +104,8 @@ struct HomeMapper {
                     authorName: $0.authorName,
                     description: $0.description,
                     avatarURL: URL(string: $0.avatarURL ?? ""),
-                    duration: $0.duration
+                    duration: $0.duration,
+                    releaseDate: Formatters.randomFormattedDate()
                 )
             }
         )

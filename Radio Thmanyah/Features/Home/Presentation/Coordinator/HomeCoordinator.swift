@@ -28,16 +28,19 @@ final class HomeCoordinator: Coordinator {
             router: router,
             container: container,
             content: {
-                HomeScreen(viewModel: self.viewModel)
+                HomeScreen()
             },
             destinationBuilder: buildDestination
         )
+        .environmentObject(viewModel)
     }
 
     private func handle(_ route: HomeRoute) {
         switch route {
         case .section(let data):
             router.toSection(section: data)
+        case .pageDetails(let data):
+            router.toDetail(item: data)
         }
     }
 
@@ -45,6 +48,7 @@ final class HomeCoordinator: Coordinator {
     private func buildDestination(for route: HomeRoute) -> some View {
         switch route {
         case .section(let data): SectionListScreen(section: data)
+        case .pageDetails(let data): ContentDetailScreen(item: data)
         }
     }
 }

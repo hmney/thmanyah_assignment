@@ -11,25 +11,28 @@ struct PodcastCard: View {
     let title: String
     let imageURL: URL?
     let episodeCount: Int
-    
+    let action: () -> Void
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            RemoteImage(
-                url: imageURL,
-                size: .init(width: 140, height: 140),
-                cornerRadius: 10
-            )
+        Button(action: action) {
+            VStack(alignment: .leading, spacing: 8) {
+                RemoteImage(
+                    url: imageURL,
+                    size: .init(width: 140, height: 140),
+                    cornerRadius: 10
+                )
 
-            Text(title)
-                .ibmFont(.medium, size: 16)
-                .foregroundColor(AppColors.primaryText)
-                .lineLimit(1)
-                .frame(maxWidth: 140, alignment: .leading)
+                Text(title)
+                    .ibmFont(.medium, size: 16)
+                    .foregroundColor(AppColors.primaryText)
+                    .lineLimit(1)
+                    .frame(maxWidth: 140, alignment: .leading)
 
-            Text("\(episodeCount) episodes")
-                .ibmFont(.regular, size: 14)
-                .foregroundColor(AppColors.secondaryText)
-                .frame(maxWidth: 140, alignment: .leading)
+                Text("\(episodeCount) episodes")
+                    .ibmFont(.regular, size: 14)
+                    .foregroundColor(AppColors.secondaryText)
+                    .frame(maxWidth: 140, alignment: .leading)
+            }
         }
     }
 }

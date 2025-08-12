@@ -33,26 +33,11 @@ struct SearchMapper {
                     priority: $0.priority,
                     popularityScore: $0.popularityScore,
                     score: $0.score,
-                    releaseDate: randomFormattedDate()
+                    releaseDate: Formatters
+                        .shortDate(Formatters
+                        .randomFormattedDate())
                 )
             }
         )
-    }
-
-    private static func randomFormattedDate() -> String {
-        let calendar = Calendar.current
-
-        // Pick a random date within a range
-        let startDate = calendar.date(from: DateComponents(year: 2020, month: 1, day: 1))!
-        let endDate = Date()
-
-        let timeInterval = endDate.timeIntervalSince(startDate)
-        let randomInterval = TimeInterval.random(in: 0..<timeInterval)
-        let randomDate = startDate.addingTimeInterval(randomInterval)
-
-        // Format as dd MMM yyyy
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMM yyyy"
-        return formatter.string(from: randomDate)
     }
 }

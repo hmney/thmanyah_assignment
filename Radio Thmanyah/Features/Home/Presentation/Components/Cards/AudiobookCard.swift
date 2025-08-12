@@ -12,26 +12,29 @@ struct AudiobookCard: View {
     let author: String
     let imageURL: URL?
     let duration: Int
-    
+    let action: () -> Void
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            RemoteImage(
-                url: imageURL,
-                size: .init(width: 180, height: 180),
-                cornerRadius: 10
-            )
-
-            Text(title)
-                .ibmFont(.medium, size: 16)
-                .foregroundColor(AppColors.primaryText)
-                .lineLimit(2)
-                .multilineTextAlignment(.leading)
-
-            Text("\(author) • \(Formatters.duration(seconds: duration))")
-                .ibmFont(.regular, size: 14)
-                .foregroundColor(AppColors.secondaryText)
-                .lineLimit(1)
-                .multilineTextAlignment(.leading)
+        Button(action: action) {
+            VStack(alignment: .leading, spacing: 8) {
+                RemoteImage(
+                    url: imageURL,
+                    size: .init(width: 180, height: 180),
+                    cornerRadius: 10
+                )
+                
+                Text(title)
+                    .ibmFont(.medium, size: 16)
+                    .foregroundColor(AppColors.primaryText)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+                
+                Text("\(author) • \(Formatters.duration(seconds: duration))")
+                    .ibmFont(.regular, size: 14)
+                    .foregroundColor(AppColors.secondaryText)
+                    .lineLimit(1)
+                    .multilineTextAlignment(.leading)
+            }
         }
     }
 }

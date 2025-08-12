@@ -24,6 +24,7 @@ struct RadioThmanyahApp: App {
                 .onReceive(NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification)) { _ in
                     appCoordinator.cleanup()
                 }
+                .environment(\.hasNotch, UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0 > 20)
         }
     }
 }

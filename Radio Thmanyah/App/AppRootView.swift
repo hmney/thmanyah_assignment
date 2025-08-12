@@ -23,6 +23,7 @@ struct AppRootView: View {
                 )
             }
         }
+        
         .alert("Network Error",
                isPresented: Binding(
                 get: { appViewModel.networkStatus == .disconnected },

@@ -9,4 +9,5 @@ import Foundation
 
 enum HomeRoute: BaseRoute {
     case section(section: HomeSection)
+    case pageDetails(item: ContentItem)
 }

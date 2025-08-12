@@ -157,7 +157,8 @@ struct SearchScreen: View {
                         PodcastCard(
                             title: podcast.name ?? "",
                             imageURL: URL(string: podcast.avatarUrl ?? ""),
-                            episodeCount: Int(podcast.episodeCount ?? "0") ?? 0
+                            episodeCount: Int(podcast.episodeCount ?? "0") ?? 0,
+                            action: {}
                         )
                     }
                 }

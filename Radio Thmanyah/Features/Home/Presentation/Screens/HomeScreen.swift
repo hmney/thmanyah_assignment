@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct HomeScreen: View {
-    @ObservedObject var viewModel: HomeViewModel
+    @EnvironmentObject var viewModel: HomeViewModel
 
     var body: some View {
         content
@@ -55,9 +55,9 @@ struct HomeScreen: View {
                         .padding(.vertical, 24)
                     } else {
                         ForEach(viewModel.displayedSections) { section in
-                            SectionRenderer(section: section, action: {
-                                viewModel.onNavigate?(.section(section: section))
-                            })
+                            SectionRenderer(
+                                section: section,
+                            )
                             .onAppear {
                                 if section.id == viewModel.displayedSections.last?.id {
                                     viewModel.loadNextPageIfNeeded()

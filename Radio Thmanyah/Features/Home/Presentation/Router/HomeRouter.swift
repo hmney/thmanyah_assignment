@@ -13,4 +13,8 @@ final class HomeRouter: BaseRouter<HomeRoute> {
     func toSection(section: HomeSection) {
         push(.section(section: section))
     }
+
+    func toDetail(item: ContentItem) {
+        push(.pageDetails(item: item))
+    }
 }

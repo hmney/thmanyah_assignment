@@ -9,11 +9,13 @@ import SwiftUI
 
 struct SectionRenderer: View {
     let section: HomeSection
-    let action: () -> Void
+    @EnvironmentObject var homeViewModel: HomeViewModel
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 12) {
-            Button(action: action) {
+            Button {
+                homeViewModel.onNavigate?(.section(section: section))
+            } label: {
                 SectionHeader(title: section.title)
             }
 
@@ -22,7 +24,10 @@ struct SectionRenderer: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 12) {
                         ForEach(section.items) { item in
-                            card(for: item)
+                            card(
+                                for: item,
+                                action: { homeViewModel.onNavigate?(.pageDetails(item: item)) }
+                            )
                         }
                     }
                     .padding(.horizontal, 16)
@@ -31,7 +36,10 @@ struct SectionRenderer: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 12) {
                         ForEach(section.items) { item in
-                            card(for: item)
+                            card(
+                                for: item,
+                                action: { homeViewModel.onNavigate?(.pageDetails(item: item)) }
+                            )
                         }
                     }
                     .padding(.horizontal, 16)
@@ -44,7 +52,10 @@ struct SectionRenderer: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHGrid(rows: rows, spacing: 12) {
                         ForEach(section.items) { item in
-                            card(for: item)
+                            card(
+                                for: item,
+                                action: { homeViewModel.onNavigate?(.pageDetails(item: item)) }
+                            )
                                 .frame(maxHeight: .infinity, alignment: .top)
                         }
                     }
@@ -54,49 +65,81 @@ struct SectionRenderer: View {
             case .unknown:
                 VStack(spacing: 12) {
                     ForEach(Array(section.items.enumerated()), id: \.offset) { _, item in
-                        card(for: item)
+                        card(
+                            for: item,
+                            action: { homeViewModel.onNavigate?(.pageDetails(item: item)) }
+                        )
                     }
                 }
                 .padding(.horizontal, 16)
             }
         }
     }
-    
+
     @ViewBuilder
-    func card(for item: ContentItem) -> some View {
+    func card(for item: ContentItem, action: @escaping () -> Void) -> some View {
         switch item {
-        case .podcast(let id, let title, let description, let avatarURL, let episodeCount):
+        case .podcast(let id, let title, _, let avatarURL, let episodeCount, _, _):
             PodcastCard(
                 title: title,
                 imageURL: avatarURL,
-                episodeCount: episodeCount ?? 0 // TODO: back to this later
+                episodeCount: episodeCount ?? 0,
+                action: action
             )
             .id(id)
 
-        case .episode(let id, let title, let podcastName, let authorName, let description, let avatarURL, let duration, let releaseDate):
+        case .episode(
+            let id,
+            let title,
+            let podcastName,
+            _,
+            _,
+            let avatarURL,
+            let duration,
+            _
+        ):
             EpisodeCard(
                 title: title,
-                podcast: podcastName ?? "", // TODO: back to this later
+                podcast: podcastName ?? "",
                 imageURL: avatarURL,
-                duration: duration ?? 0 // TODO: back to this later
+                duration: duration ?? 0,
+                action: action
             )
             .id(id)
 
-        case .audioBook(let id, let title, let authorName, let description, let avatarURL, let duration):
+        case .audioBook(
+            let id,
+            let title,
+            let authorName,
+            _,
+            let avatarURL,
+            let duration,
+            _
+        ):
             AudiobookCard(
                 title: title,
-                author: authorName ?? "", // TODO: back to this later
+                author: authorName ?? "",
                 imageURL: avatarURL,
-                duration: duration ?? 0 // TODO: back to this later
+                duration: duration ?? 0,
+                action: action
             )
             .id(id)
 
-        case .audioArticle(let id, let title, let authorName, let description, let avatarURL, let duration):
+        case .audioArticle(
+            let id,
+            let title,
+            let authorName,
+            _,
+            let avatarURL,
+            let duration,
+            _
+        ):
             ArticleCard(
                 title: title,
-                author: authorName ?? "", // TODO: back to this later
+                author: authorName ?? "",
                 imageURL: avatarURL,
-                duration: duration ?? 0 // TODO: back to this later
+                duration: duration ?? 0,
+                action: action
             )
             .id(id)
         }
