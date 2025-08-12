@@ -8,20 +8,22 @@
 import SwiftUI
 
 @main
-struct ThmanyahCloneApp: App {
-    @StateObject private var appCoordinator: AppCoordinator
+struct RadioThmanyahApp: App {
+    private let appCoordinator: AppCoordinator
 
-    @MainActor
     init() {
         let appContainer = DIContainer()
         AppDI.register(in: appContainer)
-        _appCoordinator = StateObject(wrappedValue: AppCoordinator(container: appContainer))
+
+        self.appCoordinator = AppCoordinator(container: appContainer)
     }
 
     var body: some Scene {
         WindowGroup {
             appCoordinator.start()
-                .environment(\.container, appCoordinator.container)
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification)) { _ in
+                    appCoordinator.cleanup()
+                }
         }
     }
 }

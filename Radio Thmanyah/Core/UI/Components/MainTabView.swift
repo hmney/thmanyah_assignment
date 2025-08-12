@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @ObservedObject var coordinator: AppCoordinator
+    let coordinator: AppCoordinator
+    @ObservedObject var appViewModel: AppViewModel
 
     var body: some View {
-        TabView(selection: $coordinator.selectedTab) {
+        TabView(selection: $appViewModel.selectedTab) {
             ForEach(AppTab.allCases, id: \.self) { tab in
-                coordinator.getViewForTab(tab)
+                coordinator.viewForTab(tab)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .toolbar(.hidden, for: .tabBar)
                     .tag(tab)
@@ -21,15 +22,19 @@ struct MainTabView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .safeAreaInset(edge: .bottom) {
-            CustomTabBar(selectedTab: $coordinator.selectedTab)
+            CustomTabBar(selectedTab: $appViewModel.selectedTab)
                 .ignoresSafeArea(edges: .bottom)
         }
         .ignoresSafeArea(.keyboard)
+        .disabled(appViewModel.networkStatus == .disconnected && requiresNetwork(appViewModel.selectedTab))
+    }
+
+    private func requiresNetwork(_ tab: AppTab) -> Bool {
+        switch tab {
+        case .home, .search:
+            return true
+        case .library, .settings, .square:
+            return false
+        }
     }
 }
-
-
-
-//#Preview {
-//    MainTabView()
-//}

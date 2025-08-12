@@ -9,11 +9,10 @@
 import SwiftUI
 
 @MainActor
-final class HomeCoordinator: ObservableObject, Coordinator {
+final class HomeCoordinator: Coordinator {
     private let container: DIContainer
     private let router = HomeRouter()
-    
-    @Published private(set) var viewModel: HomeViewModel
+    private(set) var viewModel: HomeViewModel
 
     init(container: DIContainer) {
         self.container = container

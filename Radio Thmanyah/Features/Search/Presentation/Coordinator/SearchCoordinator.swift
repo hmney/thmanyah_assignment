@@ -8,11 +8,10 @@
 import SwiftUI
 
 @MainActor
-final class SearchCoordinator: ObservableObject, Coordinator {
+final class SearchCoordinator: Coordinator {
     private let container: DIContainer
     private let router = SearchRouter()
-
-    @Published private(set) var viewModel: SearchViewModel
+    private(set) var viewModel: SearchViewModel
 
     init(container: DIContainer) {
         self.container = container

@@ -8,66 +8,56 @@
 import SwiftUI
 
 @MainActor
-final class AppCoordinator: ObservableObject, Coordinator {
-    let container: DIContainer
-    
-    private var tabCoordinators: [AppTab: Any] = [:]
-    private var cachedViews: [AppTab: AnyView] = [:]
-    
-    @Published var selectedTab: AppTab = .home
-    @Published private var shouldShowSplashScreen: Bool = true
+final class AppCoordinator: Coordinator {
+    private let coordinatorManager: CoordinatorManager
+    private let appViewModel: AppViewModel
 
+    @MainActor
     init(container: DIContainer) {
-        self.container = container
-        startSplashTimer()
+        let factory = DefaultCoordinatorFactory(container: container)
+        self.coordinatorManager = CoordinatorManager(factory: factory)
+        self.appViewModel = AppViewModel()
+
+        appViewModel.appDidLaunch()
     }
-    
+
     func start() -> some View {
-        Group {
-            if shouldShowSplashScreen {
-                SplashScreen()
-            } else {
-                MainTabView(coordinator: self)
-            }
-        }
+        AppRootView(
+            coordinator: self,
+            appViewModel: appViewModel
+        )
     }
-    
-    func getViewForTab(_ tab: AppTab) -> AnyView {
-        if let cachedView = cachedViews[tab] {
-            return cachedView
-        }
-        
-        let view = createViewForTab(tab)
-        cachedViews[tab] = view
-        return view
-    }
-    
-    private func createViewForTab(_ tab: AppTab) -> AnyView {
+
+    @ViewBuilder
+    func viewForTab(_ tab: AppTab) -> some View {
         switch tab {
         case .home:
-            let coordinator = HomeCoordinator(container: container)
-            tabCoordinators[tab] = coordinator
-            return AnyView(coordinator.start())
-            
+            if let coordinator = coordinatorManager.coordinator(for: tab, type: HomeCoordinator.self) {
+                coordinator.start()
+            } else {
+                Text("Error loading Home")
+            }
+
         case .search:
-            let coordinator = SearchCoordinator(container: container)
-            tabCoordinators[tab] = coordinator
-            return AnyView(coordinator.start())
+            if let coordinator = coordinatorManager.coordinator(for: tab, type: SearchCoordinator.self) {
+                coordinator.start()
+            } else {
+                Text("Error loading Search")
+            }
 
         case .square:
-            return AnyView(Text("Square Coming Soon"))
+            Text("Square Coming Soon")
 
         case .library:
-            return AnyView(Text("Libray Coming Soon"))
+            Text("Library Coming Soon")
 
         case .settings:
-            return AnyView(Text("Settings Coming Soon"))
+            Text("Settings Coming Soon")
         }
     }
-    
-    private func startSplashTimer() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.shouldShowSplashScreen = false
-        }
+
+    // Memory management
+    func cleanup() {
+        coordinatorManager.releaseAllCoordinators()
     }
 }
