@@ -124,4 +124,13 @@ Radio ThmanyahTests/
 
 1. Open the project in **Xcode**  
 2. Select a simulator or device  
-3. **Run** the app (⌘ + R)  
+3. **Run** the app (⌘ + R)
+
+---
+
+## Demo
+
+
+https://github.com/user-attachments/assets/a1182a0d-efbf-4076-b7fe-8030da6a10b2
+
+
