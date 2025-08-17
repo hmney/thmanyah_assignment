@@ -14,7 +14,7 @@ struct SectionRenderer: View {
     var body: some View {
         VStack(alignment: .trailing, spacing: 12) {
             Button {
-                homeViewModel.onNavigate?(.section(section: section))
+                homeViewModel.onNavigate?(.push(.section(section: section)))
             } label: {
                 SectionHeader(title: section.title)
             }
@@ -26,7 +26,11 @@ struct SectionRenderer: View {
                         ForEach(section.items) { item in
                             card(
                                 for: item,
-                                action: { homeViewModel.onNavigate?(.pageDetails(item: item)) }
+                                action: {
+                                    homeViewModel.onNavigate?(
+                                        .push(.pageDetails(item: item))
+                                    )
+                                }
                             )
                         }
                     }
@@ -38,7 +42,7 @@ struct SectionRenderer: View {
                         ForEach(section.items) { item in
                             card(
                                 for: item,
-                                action: { homeViewModel.onNavigate?(.pageDetails(item: item)) }
+                                action: { homeViewModel.onNavigate?(.push(.pageDetails(item: item))) }
                             )
                         }
                     }
@@ -54,7 +58,7 @@ struct SectionRenderer: View {
                         ForEach(section.items) { item in
                             card(
                                 for: item,
-                                action: { homeViewModel.onNavigate?(.pageDetails(item: item)) }
+                                action: { homeViewModel.onNavigate?(.push(.pageDetails(item: item))) }
                             )
                                 .frame(maxHeight: .infinity, alignment: .top)
                         }
@@ -67,7 +71,7 @@ struct SectionRenderer: View {
                     ForEach(Array(section.items.enumerated()), id: \.offset) { _, item in
                         card(
                             for: item,
-                            action: { homeViewModel.onNavigate?(.pageDetails(item: item)) }
+                            action: { homeViewModel.onNavigate?(.push(.pageDetails(item: item))) }
                         )
                     }
                 }

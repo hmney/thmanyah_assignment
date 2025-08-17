@@ -9,32 +9,22 @@
 import SwiftUI
 
 struct AppRootView: View {
-    let coordinator: AppCoordinator
-    @ObservedObject var appViewModel: AppViewModel
-    
+    @EnvironmentObject var appViewModel: AppViewModel
+    let mainTabsCoordinator: MainTabsCoordinator
+
     var body: some View {
         Group {
             if appViewModel.shouldShowSplashScreen {
                 SplashScreen()
                     .transition(.opacity)
             } else {
-                MainTabView(
-                    coordinator: coordinator,
-                    appViewModel: appViewModel
-                )
-                .transition(.opacity)
+                mainTabsCoordinator.start()
+                    .transition(.opacity)
             }
         }
         .animation(.easeInOut(duration: 1), value: appViewModel.shouldShowSplashScreen)
-        .alert("Network Error",
-               isPresented: Binding(
-                get: { appViewModel.networkStatus == .disconnected },
-                set: { _ in }
-               )
-        ) {
-            Button("OK") {}
-        } message: {
-            Text("Please check your internet connection")
+        .onAppear {
+            appViewModel.appDidLaunch()
         }
     }
 }

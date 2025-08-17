@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SearchScreen: View {
-    @ObservedObject var viewModel: SearchViewModel
+    @EnvironmentObject var viewModel: SearchViewModel
     @FocusState private var isSearchFieldFocused: Bool
 
     var body: some View {

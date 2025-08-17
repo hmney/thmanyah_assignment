@@ -32,40 +32,8 @@ enum AppDI {
             return d
         }
 
-        // Data sources
-        c.register(HomeRemoteDataSourceProtocol.self) { c in
-            HomeRemoteDataSource(
-                client: c.resolve(),
-                decoder: c.resolve()
-            )
-        }
-        c.register(HomeLocalDataSourceProtocol.self) { _ in
-            HomeLocalDataSource()
-        }
-        c.register(SearchRemoteDataSourceProtocol.self) { c in
-            SearchRemoteDataSource(
-                client: c.resolve(),
-                decoder: c.resolve()
-            )
-        }
-
-        // Repository
-        c.register(HomeRepositoryProtocol.self) { c in
-            HomeRepository(remote: c.resolve(), local: c.resolve())
-        }
-        c.register(SearchRepositoryProtocol.self) { c in
-            SearchRepository(remote: c.resolve())
-        }
-
-        // Use cases (scoped as factories so they’re lightweight)
-        c.register(LoadHomeFirstPageUseCaseProtocol.self, scopeSingleton: false) { c in
-            LoadHomeFirstPageUseCase(repository: c.resolve())
-        }
-        c.register(LoadHomeNextPageUseCaseProtocol.self, scopeSingleton: false) { c in
-            LoadHomeNextPageUseCase(repository: c.resolve())
-        }
-        c.register(SearchUseCaseProtocol.self, scopeSingleton: false) { c in
-            SearchUseCase(repository: c.resolve())
+        c.register(NetworkStatusProviding.self) { _ in
+            DefaultNetworkStatusProvider()
         }
     }
 }

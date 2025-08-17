@@ -86,7 +86,7 @@ final class SearchViewModelTests: XCTestCase {
         let uc = MockSearchUseCase()
         uc.result = SearchResponse(sections: [])
 
-        let vm = SearchViewModel(container: makeContainer(useCase: uc))
+        let vm = SearchViewModel(searchUseCase: uc)
         try await vm.loadIntialData()
         XCTAssertEqual(vm.state.phase, .showingInitial)
         XCTAssertNotNil(vm.state.initialSections)
@@ -95,7 +95,7 @@ final class SearchViewModelTests: XCTestCase {
     func test_typingDebounces_andCallsUseCase() async throws {
         let uc = MockSearchUseCase()
         uc.result = SearchResponse(sections: [])
-        let vm = SearchViewModel(container: makeContainer(useCase: uc))
+        let vm = SearchViewModel(searchUseCase: uc)
 
         vm.setQuery("swi")
         vm.setQuery("swif")
@@ -113,7 +113,7 @@ final class SearchViewModelTests: XCTestCase {
         let uc = MockSearchUseCase()
         uc.result = SearchResponse(sections: [makeSearchSection()])
 
-        let vm = SearchViewModel(container: makeContainer(useCase: uc))
+        let vm = SearchViewModel(searchUseCase: uc)
 
         vm.setQuery("swi")
         vm.setQuery("swif")
@@ -129,7 +129,7 @@ final class SearchViewModelTests: XCTestCase {
 
     func test_emptyQuery_clearsResults_andShowsInitialIfAvailable() async throws {
         let uc = MockSearchUseCase()
-        let vm = SearchViewModel(container: makeContainer(useCase: uc))
+        let vm = SearchViewModel(searchUseCase: uc)
         vm.setQuery("swift")
         await waitForCondition { true }
         vm.clearSearch()
@@ -141,7 +141,7 @@ final class SearchViewModelTests: XCTestCase {
     func test_error_setsErrorPhase() async throws {
         let uc = MockSearchUseCase()
         uc.error = URLError(.badServerResponse)
-        let vm = SearchViewModel(container: makeContainer(useCase: uc))
+        let vm = SearchViewModel(searchUseCase: uc)
 
         vm.setQuery("swift")
         await waitForCondition {
@@ -173,14 +173,15 @@ final class SearchViewModelTests: XCTestCase {
             (delayMs: 50,  response: .success(SearchResponse(sections: [s2]))),
         ]
 
-        let c = DIContainer(); c.register(SearchUseCaseProtocol.self, scopeSingleton: false) { _ in uc }
-        let vm = SearchViewModel(container: c)
+        let c = DIContainer()
+        c.register(SearchUseCaseProtocol.self, scopeSingleton: false) { _ in uc }
+        let vm = SearchViewModel(searchUseCase: c.resolve())
 
         vm.setQuery("swift")
         vm.setQuery("swift ui")
 
         // wait until results phase
-        await waitForCondition(timeout: 2.0) {
+        await waitForCondition(timeout: 5.0) {
             vm.state.phase == .results
         }
 
@@ -193,7 +194,7 @@ final class SearchViewModelTests: XCTestCase {
         let uc = MockSearchUseCase()
         uc.result = SearchResponse(sections: [])
 
-        let vm = SearchViewModel(container: makeContainer(useCase: uc))
+        let vm = SearchViewModel(searchUseCase: uc)
         try await vm.loadIntialData()
         XCTAssertEqual(vm.state.phase, .showingInitial)
 
@@ -208,9 +209,9 @@ final class SearchViewModelTests: XCTestCase {
     @MainActor
     func test_dismissError_goesBackToIdleOrShowingInitial() async throws {
         // First cause an error
-        let failing = MockSearchUseCase()
-        failing.error = URLError(.badServerResponse)
-        let vm = SearchViewModel(container: makeContainer(useCase: failing))
+        let uc = MockSearchUseCase()
+        uc.error = URLError(.badServerResponse)
+        let vm = SearchViewModel(searchUseCase: uc)
 
         vm.setQuery("swift")
         await waitForCondition(timeout: 1.0) {

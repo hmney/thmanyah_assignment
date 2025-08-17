@@ -9,10 +9,14 @@ import SwiftUI
 import Combine
 
 @MainActor
-final class AppViewModel: ObservableObject {
+final class AppViewModel: ViewModelProtocol {
+    typealias Route = NoRoute
+
     @Published var selectedTab: AppTab = .home
     @Published var appState: AppState = .launching
     @Published var networkStatus: NetworkStatus = .unknown
+
+    var onNavigate: ((NavigationAction<NoRoute>) -> Void)?
 
     private var cancellables = Set<AnyCancellable>()
     private let minimumSplashDuration: TimeInterval = 2.0

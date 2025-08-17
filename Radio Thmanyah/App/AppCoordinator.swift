@@ -8,56 +8,29 @@
 import SwiftUI
 
 @MainActor
-final class AppCoordinator: Coordinator {
-    private let coordinatorManager: CoordinatorManager
-    private let appViewModel: AppViewModel
+final class AppCoordinator: CompositionCoordinator {
+    var childCoordinators: [any Coordinator] = []
 
-    @MainActor
+    private let factory: CoordinatorFactory
+    let container: DIContainer
+
+    private let mainTabsCoordinator: MainTabsCoordinator
+
     init(container: DIContainer) {
-        let factory = DefaultCoordinatorFactory(container: container)
-        self.coordinatorManager = CoordinatorManager(factory: factory)
-        self.appViewModel = AppViewModel()
+        self.container = container
+        self.factory = DefaultCoordinatorFactory(container: container)
 
-        appViewModel.appDidLaunch()
+        // Setup child coordinators
+        self.mainTabsCoordinator = factory.makeMainTabsCoordinator()
+        addChild(mainTabsCoordinator)
     }
 
-    func start() -> some View {
-        AppRootView(
-            coordinator: self,
-            appViewModel: appViewModel
-        )
+    func makeViewModel(container: DIContainer) -> AppViewModel {
+        return AppViewModel()
     }
 
     @ViewBuilder
-    func viewForTab(_ tab: AppTab) -> some View {
-        switch tab {
-        case .home:
-            if let coordinator = coordinatorManager.coordinator(for: tab, type: HomeCoordinator.self) {
-                coordinator.start()
-            } else {
-                Text("Error loading Home")
-            }
-
-        case .search:
-            if let coordinator = coordinatorManager.coordinator(for: tab, type: SearchCoordinator.self) {
-                coordinator.start()
-            } else {
-                Text("Error loading Search")
-            }
-
-        case .square:
-            Text("Square Coming Soon")
-
-        case .library:
-            Text("Library Coming Soon")
-
-        case .settings:
-            Text("Settings Coming Soon")
-        }
-    }
-
-    // Memory management
-    func cleanup() {
-        coordinatorManager.releaseAllCoordinators()
+    func buildContent() -> some View {
+        AppRootView(mainTabsCoordinator: self.mainTabsCoordinator)
     }
 }

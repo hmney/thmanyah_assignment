@@ -14,7 +14,11 @@ protocol HomeViewModelProtocol: ViewModelProtocol { }
 
 @MainActor
 final class HomeViewModel: HomeViewModelProtocol {
+    typealias Route = HomeRoute
+
     @Published private(set) var state = HomeViewState()
+
+    var onNavigate: ((NavigationAction<HomeRoute>) -> Void)?
 
     var canLoadMore: Bool {
         currentPage < totalPages
@@ -31,7 +35,9 @@ final class HomeViewModel: HomeViewModelProtocol {
         )
     }
 
-    var onNavigate: ((HomeRoute) -> Void)?
+    func didSelectPodcast(item: ContentItem) {
+        onNavigate?(.push(.pageDetails(item: item)))
+    }
 
     // MARK: - Dependencies
     private let loadHomeFirstPage: LoadHomeFirstPageUseCaseProtocol
@@ -42,11 +48,12 @@ final class HomeViewModel: HomeViewModelProtocol {
     private var currentPage: Int = 1
     private var totalPages: Int = 1
 
-    init(container: DIContainer) {
-        self.loadHomeFirstPage = container
-            .resolve(LoadHomeFirstPageUseCaseProtocol.self)
-        self.loadHomeNextPage = container
-            .resolve(LoadHomeNextPageUseCaseProtocol.self)
+    init(
+        loadFirst: LoadHomeFirstPageUseCaseProtocol,
+        loadNext: LoadHomeNextPageUseCaseProtocol
+    ) {
+        self.loadHomeFirstPage = loadFirst
+        self.loadHomeNextPage = loadNext
     }
 
     // MARK: - Public Methods

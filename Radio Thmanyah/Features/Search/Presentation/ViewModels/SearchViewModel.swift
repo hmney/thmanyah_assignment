@@ -6,32 +6,29 @@
 //
 
 import SwiftUI
-
-//
-//  SearchViewModel.swift
-//  Radio Thmanyah
-//
-//  Created by Houssam-Eddine Mney on 11/8/2025.
-//
-
-import SwiftUI
 import Combine
 
 protocol SearchViewModelProtocol: ViewModelProtocol {}
 
 @MainActor
 final class SearchViewModel: SearchViewModelProtocol {
-    @Published private(set) var state = SearchViewState()
+    typealias Route = SearchRoute
 
-    var onNavigate: ((SearchRoute) -> Void)?
+    @Published private(set) var state = SearchViewState()
 
     private let searchUseCase: SearchUseCaseProtocol
     private var searchTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
-    init(container: DIContainer) {
-        self.searchUseCase = container.resolve(SearchUseCaseProtocol.self)
+    init(searchUseCase: SearchUseCaseProtocol) {
+        self.searchUseCase = searchUseCase
         setupSearchTextObserver()
+    }
+
+    var onNavigate: ((NavigationAction<SearchRoute>) -> Void)?
+
+    // TODO: implement it later.
+    func didSelectResult() {
     }
 
     // MARK: - Public Methods

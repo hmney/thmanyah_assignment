@@ -5,50 +5,31 @@
 //  Created by Houssam-Eddine Mney on 10/8/2025.
 //
 
-
+// Radio Thmanyah/Features/Home/Presentation/Coordinator/HomeCoordinator.swift
 import SwiftUI
 
 @MainActor
-final class HomeCoordinator: Coordinator {
-    private let container: DIContainer
-    private let router = HomeRouter()
-    private(set) var viewModel: HomeViewModel
+class HomeCoordinator: FlowCoordinator {
+    let container: DIContainer
+    var childCoordinator: (any Coordinator)?
+    var onFinish: ((CoordinatorResult) -> Void)?
+    var finishDelegate: CoordinatorFinishDelegate?
+    private let _router = HomeRouter()
+    var router: BaseRouter<HomeRoute> { _router }
 
     init(container: DIContainer) {
         self.container = container
-        self.viewModel = HomeViewModel(container: container)
-
-        viewModel.onNavigate = { [weak self] request in
-            self?.handle(request)
-        }
     }
 
-    func start() -> some View {
-        ModuleRootView(
-            router: router,
-            container: container,
-            content: {
-                HomeScreen()
-            },
-            destinationBuilder: buildDestination
+    func makeViewModel(container: DIContainer) -> HomeViewModel {
+        return HomeViewModel(
+            loadFirst: container.resolve(),
+            loadNext: container.resolve()
         )
-        .environmentObject(viewModel)
-    }
-
-    private func handle(_ route: HomeRoute) {
-        switch route {
-        case .section(let data):
-            router.toSection(section: data)
-        case .pageDetails(let data):
-            router.toDetail(item: data)
-        }
     }
 
     @ViewBuilder
-    private func buildDestination(for route: HomeRoute) -> some View {
-        switch route {
-        case .section(let data): SectionListScreen(section: data)
-        case .pageDetails(let data): ContentDetailScreen(item: data)
-        }
+    func buildContent() -> some View {
+        HomeScreen()
     }
 }

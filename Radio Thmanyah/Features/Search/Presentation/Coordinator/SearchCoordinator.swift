@@ -8,23 +8,25 @@
 import SwiftUI
 
 @MainActor
-final class SearchCoordinator: Coordinator {
-    private let container: DIContainer
-    private let router = SearchRouter()
-    private(set) var viewModel: SearchViewModel
+class SearchCoordinator: FlowCoordinator {
+    let container: DIContainer
+    var childCoordinator: (any Coordinator)?
+    var onFinish: ((CoordinatorResult) -> Void)?
+    var finishDelegate: CoordinatorFinishDelegate?
+
+    private let _router = SearchRouter()
+    var router: BaseRouter<SearchRoute> { _router }
 
     init(container: DIContainer) {
         self.container = container
-        self.viewModel = SearchViewModel(container: container)
     }
 
-    func start() -> some View {
-        ModuleRootView(
-            router: router,
-            container: container,
-            content: {
-                SearchScreen(viewModel: self.viewModel)
-            }
-        )
+    func makeViewModel(container: DIContainer) -> SearchViewModel {
+        return SearchViewModel(searchUseCase: container.resolve())
+    }
+
+    @ViewBuilder
+    func buildContent() -> some View {
+        SearchScreen()
     }
 }

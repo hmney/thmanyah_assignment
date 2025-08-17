@@ -9,9 +9,6 @@
 import SwiftUI
 import Kingfisher
 
-import SwiftUI
-import Kingfisher
-
 struct ContentDetailScreen: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.hasNotch) private var hasNotch

@@ -7,7 +7,9 @@
 
 import Foundation
 
-protocol BaseRoute: Hashable, Identifiable {}
+protocol BaseRoute: Hashable, Identifiable {
+    var id: String { get }
+}
 
 extension BaseRoute {
     var id: String { String(describing: self) }

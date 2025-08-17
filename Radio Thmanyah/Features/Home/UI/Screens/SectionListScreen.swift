@@ -53,7 +53,7 @@ private struct ContentItemView: View {
     var body: some View {
         Button {
             homeViewModel.onNavigate?(
-                .pageDetails(item: contentItem)
+                .push(.pageDetails(item: contentItem))
             )
         } label: {
             VStack(spacing: 5) {

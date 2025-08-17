@@ -63,7 +63,11 @@ final class HomeViewModelTests: XCTestCase {
             next: { _ in ([], Pagination(nextPage: nil, totalPages: 2)) }
         )
 
-        let vm = HomeViewModel(container: container)
+        let vm = HomeViewModel(
+            loadFirst: container.resolve(),
+            loadNext: container
+                .resolve()
+        )
 
         // Verify initial state
         XCTAssertEqual(vm.state.phase, .idle)
@@ -103,7 +107,11 @@ final class HomeViewModelTests: XCTestCase {
             next: { _ in ([secondSection], Pagination(nextPage: nil, totalPages: 2)) }
         )
 
-        let vm = HomeViewModel(container: container)
+        let vm = HomeViewModel(
+            loadFirst: container.resolve(),
+            loadNext: container
+                .resolve()
+        )
 
         // Load first page
         vm.onAppear()
@@ -134,7 +142,11 @@ final class HomeViewModelTests: XCTestCase {
             next: { _ in ([], Pagination(nextPage: nil, totalPages: 1)) }
         )
 
-        let vm = HomeViewModel(container: container)
+        let vm = HomeViewModel(
+            loadFirst: container.resolve(),
+            loadNext: container
+                .resolve()
+        )
 
         vm.onAppear()
 
@@ -171,7 +183,11 @@ final class HomeViewModelTests: XCTestCase {
             next: { _ in ([], Pagination(nextPage: nil, totalPages: 1)) }
         )
 
-        let vm = HomeViewModel(container: container)
+        let vm = HomeViewModel(
+            loadFirst: container.resolve(),
+            loadNext: container
+                .resolve()
+        )
 
         // Initial load
         vm.onAppear()
@@ -203,7 +219,11 @@ final class HomeViewModelTests: XCTestCase {
             next: { _ in ([section], Pagination(nextPage: "p3", totalPages: 3)) }
         )
 
-        let vm = HomeViewModel(container: container)
+        let vm = HomeViewModel(
+            loadFirst: container.resolve(),
+            loadNext: container
+                .resolve()
+        )
 
         // Initially should be able to load more (assuming currentPage starts at 1, totalPages will be 3)
         vm.onAppear()
@@ -244,7 +264,11 @@ final class HomeViewModelTests: XCTestCase {
             next: { _ in ([], Pagination(nextPage: nil, totalPages: 1)) }
         )
 
-        let vm = HomeViewModel(container: container)
+        let vm = HomeViewModel(
+            loadFirst: container.resolve(),
+            loadNext: container
+                .resolve()
+        )
 
         vm.onAppear()
         await waitForCondition {
@@ -298,7 +322,11 @@ final class HomeViewModelTests: XCTestCase {
             next:  { path in try await repo.loadNextPage(path: path) }
         )
 
-        let vm = HomeViewModel(container: container)
+        let vm = HomeViewModel(
+            loadFirst: container.resolve(),
+            loadNext: container
+                .resolve()
+        )
 
         vm.onAppear()
         vm.onAppear() // second call should be ignored due to `guard case .idle`
@@ -318,12 +346,16 @@ final class HomeViewModelTests: XCTestCase {
             order: 1,
             items: []
         )
-        let c = makeContainer(
+        let container = makeContainer(
             first: { ([section], Pagination(nextPage: nil, totalPages: 1)) },
             next:  { _ in XCTFail("Should not call next"); return ([], Pagination(nextPage: nil, totalPages: 1)) }
         )
 
-        let vm = HomeViewModel(container: c)
+        let vm = HomeViewModel(
+            loadFirst: container.resolve(),
+            loadNext: container
+                .resolve()
+        )
         vm.onAppear()
         await waitForCondition {
             vm.state.phase == .content
